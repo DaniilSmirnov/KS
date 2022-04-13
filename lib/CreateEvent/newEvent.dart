@@ -21,6 +21,10 @@ class Contacts {
   var check = false;
 
   Contacts({required this.name, required this.check});
+
+  void setChecked(state){
+    check = state;
+  }
 }
 
 List list = [
@@ -29,21 +33,21 @@ List list = [
 
 Future<void> setEvent(name, datetime) async {
   final prefs = await SharedPreferences.getInstance();
-   var events  = prefs.getString('events');
+   var events  = prefs.getString('eventss');
   if (events != null) {
     var data = jsonDecode(events);
-    data = data?.append({
+    data = data?.add({
       'name': name,
-      'datetime': datetime
+      'datetime': datetime.adddate + ' ' + datetime.timefrom + ' ' + datetime.timeto
     });
-    prefs.setString('events', data.toString());
+    prefs.setString('eventss', json.encode(data).toString());
   }
   else {
     var data = [{
       'name': name,
-      'datetime': datetime
+      'datetime': datetime.adddate + ' ' + datetime.timefrom + ' ' + datetime.timeto
     }];
-    prefs.setString('events', data.toString());
+    prefs.setString('eventss', json.encode(data).toString());
   }
 }
 
@@ -89,7 +93,7 @@ class _newEventState extends State<newEventPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        setEvent(controller.text, listdate[0].toString());
+                        setEvent(controller.text, listdate[0]);
                         Navigator.pop(context);
                       },
                       child: Text(

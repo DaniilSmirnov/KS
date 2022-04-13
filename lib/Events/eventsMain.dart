@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:diplom/CreateEvent/newEvent.dart';
 import 'package:diplom/Notifications/eventsNotifications.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var eventsArray = null;
+List <Widget> widgets = [];
 
 class eventsMainPage extends StatefulWidget {
   const eventsMainPage({Key? key}) : super(key: key);
@@ -21,22 +23,94 @@ class eventsMainPage extends StatefulWidget {
 }
 
 
-Future<void> getEvents(name, datetime) async {
+Future<void> getEvents() async {
   final prefs = await SharedPreferences.getInstance();
-  var events  = prefs.getString('events');
+  //prefs.remove('events');
+  var events  = prefs.getString('eventss');
   if (events != null) {
     eventsArray = jsonDecode(events);
+    for(var event in eventsArray) {
+      widgets.add(Neumorphic(
+        child: Container(
+          height: 100,
+          width: 200,
+          child: TextButton(
+            onPressed: () {
+
+            },
+            child: Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8, top: 30),
+                      child: Text(event.name,
+                          style: GoogleFonts.manrope(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: -0.3,
+                              color: Colors.black)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 4, left: 8),
+                      child: Row(
+                        children: [
+                          Text(
+                              event.datetime,
+                              style: GoogleFonts.manrope(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -0.3,
+                                  color: Colors.black)),
+                          Icon(
+                            Icons.person,
+                            size: 16,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        style: NeumorphicStyle(color: Color(0xFFAAFFE5)),
+      ));
+    }
   }
   else {
-    eventsArray = null;
+    widgets.add(Text(
+      'У вас нет встреч',
+      style: GoogleFonts.openSans(
+          fontSize: 21,
+          fontWeight: FontWeight.w700,
+          letterSpacing: -0.7,
+          color: Colors.black),
+    ));
   }
 }
 
+
 class _eventsMainState extends State<eventsMainPage> {
-  bool _isDisabled = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getEvents();
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -396,9 +470,7 @@ class _eventsMainState extends State<eventsMainPage> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                      ],
+                      children: widgets,
                     ),
                   ],
                 ),
