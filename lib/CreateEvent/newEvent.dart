@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:diplom/CreateEvent/addDate.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class newEventPage extends StatefulWidget {
   const newEventPage({Key? key}) : super(key: key);
@@ -24,6 +26,26 @@ class Contacts {
 List list = [
   Contacts(name: 'Mikhailova Alevtina', check: false),
 ];
+
+Future<void> setEvent(name, datetime) async {
+  final prefs = await SharedPreferences.getInstance();
+   var events  = prefs.getString('events');
+  if (events != null) {
+    var data = jsonDecode(events);
+    data = data?.append({
+      'name': name,
+      'datetime': datetime
+    });
+    prefs.setString('events', data.toString());
+  }
+  else {
+    var data = [{
+      'name': name,
+      'datetime': datetime
+    }];
+    prefs.setString('events', data.toString());
+  }
+}
 
 class _newEventState extends State<newEventPage> {
   var controller = TextEditingController();
@@ -67,6 +89,7 @@ class _newEventState extends State<newEventPage> {
                     ),
                     TextButton(
                       onPressed: () {
+                        setEvent(controller.text, listdate[0].toString());
                         Navigator.pop(context);
                       },
                       child: Text(

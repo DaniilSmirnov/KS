@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:diplom/CreateEvent/newEvent.dart';
 import 'package:diplom/Notifications/eventsNotifications.dart';
@@ -8,12 +9,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+var eventsArray = null;
 
 class eventsMainPage extends StatefulWidget {
   const eventsMainPage({Key? key}) : super(key: key);
 
   @override
   State<eventsMainPage> createState() => _eventsMainState();
+}
+
+
+Future<void> getEvents(name, datetime) async {
+  final prefs = await SharedPreferences.getInstance();
+  var events  = prefs.getString('events');
+  if (events != null) {
+    eventsArray = jsonDecode(events);
+  }
+  else {
+    eventsArray = null;
+  }
 }
 
 class _eventsMainState extends State<eventsMainPage> {
@@ -381,243 +397,8 @@ class _eventsMainState extends State<eventsMainPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Neumorphic(
-                          child: Container(
-                            height: 100,
-                            width: 200,
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => infoEventPage(),
-                                    ));
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8, top: 30),
-                                        child: Text('Кафе ',
-                                            style: GoogleFonts.manrope(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w800,
-                                                letterSpacing: -0.3,
-                                                color: Colors.black)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 4, left: 8),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                                '15:00 - 25 апреля' +
-                                                    '     1',
-                                                style: GoogleFonts.manrope(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w600,
-                                                    letterSpacing: -0.3,
-                                                    color: Colors.black)),
-                                            Icon(
-                                              Icons.person,
-                                              size: 16,
-                                              color: Colors.black,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          style: NeumorphicStyle(color: Color(0xFFAAFFE5)),
-                        ),
-                        Neumorphic(
-                          child: Container(
-                            height: 100,
-                            width: 170,
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8, top: 30),
-                                        child: Text('Кино',
-                                            style: GoogleFonts.manrope(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w800,
-                                                letterSpacing: -0.3,
-                                                color: Colors.black)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 4, left: 8),
-                                        child: Row(
-                                          children: [
-                                            Text('' + '     0',
-                                                style: GoogleFonts.manrope(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w600,
-                                                    letterSpacing: -0.3,
-                                                    color: Colors.black)),
-                                            Icon(
-                                              Icons.person,
-                                              size: 16,
-                                              color: Colors.black,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          style: NeumorphicStyle(color: Color(0xFFB6CAFF)),
-                        ),
+
                       ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Neumorphic(
-                            child: Container(
-                              height: 100,
-                              width: 360,
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, top: 30),
-                                          child: Text('Театр',
-                                              style: GoogleFonts.manrope(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w800,
-                                                  letterSpacing: -0.3,
-                                                  color: Colors.black)),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 4, left: 8),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                  '' +
-                                                      '     0',
-                                                  style: GoogleFonts.manrope(
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      letterSpacing: -0.3,
-                                                      color: Colors.black)),
-                                              Icon(
-                                                Icons.person,
-                                                size: 16,
-                                                color: Colors.black,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            style: NeumorphicStyle(color: Color(0xFFFFF5C2)),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Neumorphic(
-                            child: Container(
-                              height: 100,
-                              width: 170,
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, top: 30),
-                                          child: Text('Коворкинг',
-                                              style: GoogleFonts.manrope(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w800,
-                                                  letterSpacing: -0.3,
-                                                  color: Colors.black)),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 4, left: 8),
-                                          child: Row(
-                                            children: [
-                                              Text('' + '     0',
-                                                  style: GoogleFonts.manrope(
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      letterSpacing: -0.3,
-                                                      color: Colors.black)),
-                                              Icon(
-                                                Icons.person,
-                                                size: 16,
-                                                color: Colors.black,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            style: NeumorphicStyle(color: Color(0xFFF4D3FF)),
-                          ),
-                        ],
-                      ),
                     ),
                   ],
                 ),
