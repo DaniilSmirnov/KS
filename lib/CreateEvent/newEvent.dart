@@ -33,22 +33,26 @@ List list = [
 
 Future<void> setEvent(name, datetime) async {
   final prefs = await SharedPreferences.getInstance();
-   var events  = prefs.getString('eventss');
-  if (events != null) {
-    var data = jsonDecode(events);
+  var events  = prefs.getString('events');
+  var data;
+  if (events != 'null') {
+    data = jsonDecode(events!);
+    print(data);
     data = data?.add({
       'name': name,
       'datetime': datetime.adddate + ' ' + datetime.timefrom + ' ' + datetime.timeto
     });
-    prefs.setString('eventss', json.encode(data).toString());
+    prefs.setString('events', json.encode(data).toString());
   }
   else {
-    var data = [{
+    data = [{
       'name': name,
       'datetime': datetime.adddate + ' ' + datetime.timefrom + ' ' + datetime.timeto
     }];
-    prefs.setString('eventss', json.encode(data).toString());
+    print(data);
+    prefs.setString('events', json.encode(data).toString());
   }
+  print(json.encode(data).toString());
 }
 
 class _newEventState extends State<newEventPage> {

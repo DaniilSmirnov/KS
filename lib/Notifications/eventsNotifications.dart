@@ -131,7 +131,7 @@ class _eventsNotificationsState extends State<eventsNotificationsPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Отлонить',
+                                    Text('Отклонить',
                                         style: GoogleFonts.openSans(
                                             color: Color(0xFF444444),
                                             fontSize: 16,
